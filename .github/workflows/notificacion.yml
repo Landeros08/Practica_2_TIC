@@ -1,0 +1,25 @@
+name: Notificacion por Correo
+
+on:
+  push:
+    branches:
+      - main
+      - feature_a
+      - feature_b
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar correo de notificacion
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: Cambios subidos a rama ${{ github.ref_name }}
+          to: ${{ secrets.MAIL_USERNAME }}
+          from: GitHub Actions <${{ secrets.MAIL_USERNAME }}>
+          body: Se han subido nuevos cambios a la rama ${{ github.ref_name }} en el repositorio ${{ github.repository }}.
